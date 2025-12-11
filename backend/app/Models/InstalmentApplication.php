@@ -30,4 +30,9 @@ class InstalmentApplication extends Model
     {
         return $this->belongsTo(Installment::class);
     }
+
+    public function society()
+    {
+        return $this->belongsTo(Society::class);
+    }
 }

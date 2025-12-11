@@ -14,16 +14,17 @@ class Validator extends Authenticatable
     use HasFactory, HasApiTokens;
 
     protected $table = 'validators';
-    protected $fillable = ['name', 'email', 'password','role_id'];
+    protected $fillable = ['name', 'email', 'password', 'role_id'];
     protected $hidden = ['password', 'remember_token'];
+    protected $with = ['role']; // Automatically load role relationship
 
     public function validations()
     {
         return $this->hasMany(Validation::class, 'validator_id');
     }
-    public function role():BelongsTo 
+    public function role(): BelongsTo
     {
-        return $this->belongsTo(roles::class,'role_id','id');
+        return $this->belongsTo(roles::class, 'role_id', 'id');
 
     }
 }

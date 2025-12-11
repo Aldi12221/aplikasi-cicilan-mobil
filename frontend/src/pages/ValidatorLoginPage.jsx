@@ -17,10 +17,25 @@ const ValidatorLoginPage = () => {
         e.preventDefault();
         try {
             const response = await api.post('validator/auth/login', formData);
-            // Tambahkan peran validator secara eksplisit ke objek pengguna
-            const userWithRole = { ...response.data.validator, role: 'validator' };
+            console.log('API Response:', response.data);
+
+            // Get role from response
+            const role = response.data.role || 'validator';
+            const userWithRole = { ...response.data.validator, role: role };
+
+            console.log('User with role:', userWithRole);
+            console.log('Role:', role);
+
             login(userWithRole, response.data.token);
-            navigate('/validator/dashboard');
+
+            // Redirect based on role
+            if (role === 'company') {
+                console.log('Redirecting to /admin/dashboard');
+                navigate('/admin/dashboard');
+            } else {
+                console.log('Redirecting to /validator/dashboard');
+                navigate('/validator/dashboard');
+            }
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');
             console.error(err);

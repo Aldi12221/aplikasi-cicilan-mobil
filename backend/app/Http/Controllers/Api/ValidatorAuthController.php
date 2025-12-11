@@ -16,7 +16,7 @@ class ValidatorAuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $validator = Validator::where('email', $request->email)->first();
+        $validator = Validator::with('role')->where('email', $request->email)->first();
 
         if (!$validator || !Hash::check($request->password, $validator->password)) {
             return response()->json(['message' => 'Email atau password salah'], 401);
@@ -24,13 +24,27 @@ class ValidatorAuthController extends Controller
 
         $token = $validator->createToken('validator-token', ['validator'])->plainTextToken;
 
+        // Get role name with fallback logic
+        $roleName = 'validator'; // Default
+
+        // Try to get from relationship
+        if ($validator->role) {
+            $roleName = $validator->role->role;
+        }
+        // Fallback: check ID directly
+        elseif ($validator->role_id == 2) {
+            $roleName = 'company';
+        } elseif ($validator->role_id == 1) {
+            $roleName = 'validator';
+        }
+
         return response()->json([
-        'token' => $token,
-        'validator' => $validator,
-        'role' => 'validator' // Tambahkan properti role
-    ]);
+            'token' => $token,
+            'validator' => $validator,
+            'role' => $roleName,
+        ]);
     }
-    
+
     public function logout(Request $request)
     {
         $request->user('validator')->currentAccessToken()->delete();

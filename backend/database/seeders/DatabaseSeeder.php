@@ -15,14 +15,15 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RegionalSeeder::class,
+            RoleSeeder::class,
             ValidatorSeeder::class,
             BrandSeeder::class,
             InstalmentCarSeeder::class,
-            
+
             SocietySeeder::class,
-            
-            
-            
+
+
+
         ]);
     }
 }

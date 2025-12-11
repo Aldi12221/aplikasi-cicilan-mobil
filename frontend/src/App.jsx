@@ -8,32 +8,36 @@ import CarListPage from './pages/CarListPage';
 import CarDetailPage from './pages/CarDetailPage';
 import ValidatorDashboardPage from './pages/ValidatorDashboardPage';
 import ValidatorLoginPage from './pages/ValidatorLoginPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 import Layouts from './components/layouts'
 import NotFound from './pages/NotFound';
 
 function App() {
     return (
-       
+
         <Routes  >
             {/* Rute publik */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/validator/login" element={<ValidatorLoginPage />} />
-            
+
             {/* Rute yang hanya bisa diakses oleh masyarakat (society) */}
             <Route path='/' element={<Layouts></Layouts>}>
-            <Route path="/dashboard" element={<ProtectedRoute allowedRole="society"><DashboardPage /></ProtectedRoute>} />
-            <Route path="/validation/request" element={<ProtectedRoute allowedRole="society"><ValidationPage /></ProtectedRoute>} />
-            <Route path="/instalment_cars" element={<ProtectedRoute allowedRole="society"><CarListPage /></ProtectedRoute>} />
-            <Route path="/instalment_cars/:id" element={<ProtectedRoute allowedRole="society"><CarDetailPage /></ProtectedRoute>} />
+                <Route path="/dashboard" element={<ProtectedRoute allowedRole="society"><DashboardPage /></ProtectedRoute>} />
+                <Route path="/validation/request" element={<ProtectedRoute allowedRole="society"><ValidationPage /></ProtectedRoute>} />
+                <Route path="/instalment_cars" element={<ProtectedRoute allowedRole="society"><CarListPage /></ProtectedRoute>} />
+                <Route path="/instalment_cars/:id" element={<ProtectedRoute allowedRole="society"><CarDetailPage /></ProtectedRoute>} />
 
-            {/* Rute yang hanya bisa diakses oleh validator */}
-            <Route path="/validator/dashboard" element={<ProtectedRoute allowedRole="validator"><ValidatorDashboardPage /></ProtectedRoute>} />
+                {/* Rute yang hanya bisa diakses oleh validator */}
+                <Route path="/validator/dashboard" element={<ProtectedRoute allowedRole="validator"><ValidatorDashboardPage /></ProtectedRoute>} />
+
+                {/* Rute yang hanya bisa diakses oleh admin/company */}
+                <Route path="/admin/dashboard" element={<ProtectedRoute allowedRole="company"><AdminDashboardPage /></ProtectedRoute>} />
             </Route>
 
             {/* Rute default untuk halaman yang tidak ditemukan */}
-            <Route path="*" element={<NotFound/>} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
-        
+
     );
 }
 
